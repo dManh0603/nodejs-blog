@@ -14,9 +14,6 @@ class SiteController {
             .catch(e => {
                 next(e);
             })
-
-
-        // 
     }
 
     // [GET] /search

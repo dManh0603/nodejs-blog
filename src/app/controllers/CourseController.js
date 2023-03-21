@@ -1,16 +1,53 @@
 const Course = require('../models/Course');
 const { mongooseToObject } = require('../../util/mongoose');
 
-class SiteController {
+class CourseController {
+
     // [GET] /courses/:slug
     show(req, res) {
 
         Course.findOne({ slug: req.params.slug })
             .then(course => {
-                res.render('courses/show', { course: mongooseToObject(course)});
+                res.render('courses/show', { course: mongooseToObject(course) });
             })
             .catch(e => next(e))
     }
+
+    // [GET] /courses/create
+    create(req, res, next) {
+        res.render('courses/create');
+    }
+    // [POST] /courses/store
+    store(req, res, next) {
+        const formData = req.body;
+        const course = new Course(formData);
+        course.save()
+            .then(() => {
+                console.log('Create successfully');
+                res.redirect('/');
+            })
+            .catch(e => {
+
+            });
+
+    }
+
+    // [GET] /courses/:id/edit
+    edit(req, res, next) {
+        Course.findById(req.params.id)
+            .then(course => res.render('courses/edit', {
+                course: mongooseToObject(course)
+            }))
+            .catch(next)
+
+    }
+
+    // [PUT] /courses/:id
+    update(req, res, next) {
+        Course.updateOne({ _id: req.params.id }, req.body)
+            .then(() => res.redirect('/me/stored/courses'))
+            .catch(next)
+    }
 }
 
-module.exports = new SiteController;
+module.exports = new CourseController;
