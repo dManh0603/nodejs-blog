@@ -24,7 +24,7 @@ class CourseController {
         course.save()
             .then(() => {
                 console.log('Create successfully');
-                res.redirect('/');
+                res.redirect('/me/stored/courses');
             })
             .catch(e => {
 
@@ -46,6 +46,27 @@ class CourseController {
     update(req, res, next) {
         Course.updateOne({ _id: req.params.id }, req.body)
             .then(() => res.redirect('/me/stored/courses'))
+            .catch(next)
+    }
+
+    // [DELETE] /courses/:id
+    delete(req, res, next) {
+        Course.delete({ _id: req.params.id })
+            .then(() => res.redirect('back'))
+            .catch(next)
+    }
+
+    // [DELETE] /courses/:id/destroy
+    destroy(req, res, next) {
+        Course.deleteOne({ _id: req.params.id })
+            .then(() => res.redirect('back'))
+            .catch(next)
+    }
+
+    // [PATCH] /courses/:id/restore
+    restore(req, res, next) {
+        Course.restore({ _id: req.params.id })
+            .then(() => res.redirect('back'))
             .catch(next)
     }
 }
