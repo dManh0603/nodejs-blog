@@ -11,6 +11,9 @@ const port = 3030;
 const route = require('./routes');
 const db = require('./config/db');
 
+// Load evironment variables in .env file
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+
 // Connect to db
 db.connect();
 
@@ -30,7 +33,9 @@ app.use(express.json());
 app.use(methodOverride('_method'));
 
 // HTTP logger
-app.use(morgan('combined'));
+if (process.env.NODE_ENV === 'DEV') {
+    app.use(morgan('combined'));
+}
 
 // Template engine
 app.engine('hbs', handlebars.engine({
