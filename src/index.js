@@ -12,7 +12,7 @@ const route = require('./routes');
 const db = require('./config/db');
 
 // Load evironment variables in .env file
-require('dotenv').config({ path: path.join(__dirname, '.env') });
+require('dotenv').config();
 
 // Connect to db
 db.connect();
